@@ -39,13 +39,12 @@ pub const MDBOOK_VERSION: &str = mdbook::MDBOOK_VERSION;
 /// backend.
 fn version_check(ctx: &RenderContext) -> Result<(), Error> {
     let provided_version = Version::parse(&ctx.version)?;
-    let required_version = VersionReq::parse(&format!("~{MDBOOK_VERSION}"))?;
-
+    let required_version = VersionReq::parse(&format!("~{MDBOOK_VERSION}"))?;    
     if !required_version.matches(&provided_version) {
-        Err(Error::IncompatibleVersion(
-            MDBOOK_VERSION.to_string(),
-            ctx.version.clone(),
-        ))
+        eprintln!(
+            "WARNING: Incompatible mdbook version. Got {}, expected {}. You may face issues.",
+            ctx.version, MDBOOK_VERSION
+        )
     } else {
         Ok(())
     }
